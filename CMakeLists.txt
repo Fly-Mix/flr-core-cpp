@@ -53,6 +53,16 @@ SET_TARGET_PROPERTIES(
 # 头文件输出
 file(COPY  ${PUBLIC_HEADER_FILES} DESTINATION  "${PRODUCTS_DIR}/include")
 
+# ------ 分割线 ------
+# 三方库
+set(3RDPARTY_DIR
+        "${PROJECT_SOURCE_DIR}/3rdparty"
+        )
+# 源码引入三方库-rapidyaml
+add_subdirectory(${3RDPARTY_DIR}/rapidyaml ryml)
+target_link_libraries(${PROJECT_NAME} PUBLIC ryml)
+
+# ------ 分割线 ------
 # 参考资料
 # - 《C++工程：总结 CMake 添加第三方库依赖方式 find_library、FetchContent、CPM等》：https://www.jianshu.com/p/f181b5bd0a63
 # - 《Cmake 脚本对项目输出路径和输出头文件的路径定义》：https://blog.csdn.net/fengjunwang1980/article/details/78272203
