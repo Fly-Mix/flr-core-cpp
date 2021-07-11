@@ -6,21 +6,22 @@
 #include "flr-core/flr.h"
 #include <ryml.hpp>
 #include <ryml_std.hpp>
+#include <glog/logging.h>
 
 // convenience functions to print a node
 void show_keyval(ryml::NodeRef n)
 {
     assert(n.has_key());
-    std::cout << n.key() << ": " << n.val() << "\n";
+    LOG(INFO) << n.key() << ": " << n.val() << "\n";
 }
 void show_val(ryml::NodeRef n)
 {
     assert(n.has_val());
-    std::cout << n.val() << "\n";
+    LOG(INFO) << n.val() << "\n";
 }
 
 void flr::hello() {
-    std::cout << "Hello, World! Hello C++! " << std::endl;
+    LOG(INFO)  << "Hello, World! Hello C++! " << std::endl;
 
     // ryml can parse in situ (and read-only buffers too):
     char src[] = "{foo: 1, bar: [2, 3]}";

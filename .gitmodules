@@ -1,3 +1,6 @@
 [submodule "3rdparty/rapidyaml"]
 	path = 3rdparty/rapidyaml
 	url = https://github.com/biojppm/rapidyaml.git
+[submodule "3rdparty/glog"]
+	path = 3rdparty/glog
+	url = https://github.com/google/glog.git
