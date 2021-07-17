@@ -66,6 +66,9 @@ target_link_libraries(${PROJECT_NAME} PUBLIC ryml)
 add_subdirectory(${3RDPARTY_DIR}/glog glog)
 target_link_libraries(${PROJECT_NAME} PUBLIC glog)
 
+# 源码引入三方库-fmt
+add_subdirectory(${3RDPARTY_DIR}/fmt fmt)
+target_link_libraries(${PROJECT_NAME} PUBLIC fmt)
 # ------ 分割线 ------
 # 参考资料
 # - 《C++工程：总结 CMake 添加第三方库依赖方式 find_library、FetchContent、CPM等》：https://www.jianshu.com/p/f181b5bd0a63
