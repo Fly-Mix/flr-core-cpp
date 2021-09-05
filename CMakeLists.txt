@@ -16,6 +16,11 @@ set(VERSION
 
 set(SOURCE_FILES
         src/flr.cpp
+        src/constant.h
+        src/util/file_util.cpp
+        src/util/code_util.cpp
+        src/util/asset_util.cpp
+        src/util/array_util.cpp
         )
 
 set(PUBLIC_HEADER_FILES
