@@ -25,6 +25,10 @@
 namespace fs = std::__fs::filesystem;
 
 namespace flr {
+    void say_hi() {
+        std::cout << "hello from flr" << std::endl;
+    }
+
     /**
      * @verbatim
      * check_flr_config_is_existed(pubspec_config)  ->  true/false
@@ -485,6 +489,16 @@ namespace flr {
         ryml::emitrs<std::string>(pubspec_tree, pubspec_tree.root_id(), &pubspec_file_new_content);
         LOG(INFO) << "new pubspec file content:\n" << pubspec_file_new_content << std::endl;
         return pubspec_file_new_content;
+    }
+
+    void default_flr_opt_log_callback(std::string log_msg) {
+        LOG(INFO) << log_msg;
+    }
+
+    std::string init_one_without_cb(std::string flutter_project_root_dir,
+                         std::string flutter_sdk_version,
+                         std::string dart_sdk_version) {
+        return init_one(flutter_project_root_dir, flutter_sdk_version, dart_sdk_version, default_flr_opt_log_callback);
     }
 
     ResultOfGenerateOne generate_one(std::string flutter_project_root_dir,

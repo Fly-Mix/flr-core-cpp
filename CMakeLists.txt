@@ -4,6 +4,9 @@ project(flr-core VERSION 0.1.0)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+# 引入工程开发配置：是否采用源码方式引入库
+include(cmake_dev.cmake)
+
 # ------ 分割线 ------
 
 set(PRODUCTS_DIR
@@ -63,17 +66,40 @@ file(COPY  ${PUBLIC_HEADER_FILES} DESTINATION  "${PRODUCTS_DIR}/include")
 set(3RDPARTY_DIR
         "${PROJECT_SOURCE_DIR}/3rdparty"
         )
-# 源码引入三方库-rapidyaml
-add_subdirectory(${3RDPARTY_DIR}/rapidyaml ryml)
-target_link_libraries(${PROJECT_NAME} PUBLIC ryml)
 
-# 源码引入三方库-glog
-add_subdirectory(${3RDPARTY_DIR}/glog glog)
-target_link_libraries(${PROJECT_NAME} PUBLIC glog)
+if (${FLR_USE_SRC})
+    # FLR_USE_SRC 为 True，源码方式引入三方库
+    message(STATUS "FLR_USE_SRC 值为：${FLR_USE_SRC}，flr-core 工程以源码方式引入三方库")
 
-# 源码引入三方库-fmt
-add_subdirectory(${3RDPARTY_DIR}/fmt fmt)
-target_link_libraries(${PROJECT_NAME} PUBLIC fmt)
+    # rapidyaml
+    add_subdirectory(${3RDPARTY_DIR}/rapidyaml ryml)
+    target_link_libraries(${PROJECT_NAME} PUBLIC ryml)
+
+    # fmt
+    add_subdirectory(${3RDPARTY_DIR}/fmt fmt)
+    target_link_libraries(${PROJECT_NAME} PUBLIC fmt)
+
+    # glog
+    add_subdirectory(${3RDPARTY_DIR}/glog glog)
+    target_link_libraries(${PROJECT_NAME} PUBLIC glog)
+else()
+    # FLR_USE_SRC 为 False，二进制方式引入三方库
+    message(STATUS "FLR_USE_SRC 值为：${FLR_USE_SRC}，flr-core 工程以二进制方式引入三方库")
+
+    # rapidyaml
+    include_directories("${3RDPARTY_DIR}/rapidyaml-lib/include")
+    # 库构建，不会做 link；可执行文件构建，才会做 link，故此处不需要设置 link_directories
+    # link_directories("${3RDPARTY_DIR}/rapidyaml-lib/lib")
+
+    # fmt
+    include_directories("${3RDPARTY_DIR}/fmt-lib/include")
+
+    # glog
+    include_directories("${3RDPARTY_DIR}/glog-lib/include")
+
+endif ()
+
+
 # ------ 分割线 ------
 # 参考资料
 # - 《C++工程：总结 CMake 添加第三方库依赖方式 find_library、FetchContent、CPM等》：https://www.jianshu.com/p/f181b5bd0a63

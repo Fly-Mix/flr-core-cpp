@@ -116,6 +116,7 @@ void test_stringstream_api() {
 void test_flr_api() {
     LOG(INFO) << "========== test flr::init_one ==========";
     flr::init_one("/Users/York/Workspace/Flutterspace/flutter_hello_app", "2.0.3", "2.12.2", flr_opt_log_callback);
+//    flr::init_one_without_cb("/Users/York/Workspace/Flutterspace/flutter_hello_app", "2.0.3", "2.12.2");
 
     LOG(INFO) << "========== test flr::generate_one ==========";
     flr::generate_one("/Users/York/Workspace/Flutterspace/flutter_hello_app", "2.0.3", "2.12.2", flr_opt_log_callback);
@@ -125,3 +126,11 @@ int main() {
     test_flr_api();
     return 0;
 }
+
+/*
+#include "flr-core/flr.h"
+int main() {
+    flr::say_hi();
+    return 0;
+}
+*/

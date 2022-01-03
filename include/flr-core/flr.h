@@ -8,14 +8,14 @@
 #include <iostream>
 
 namespace flr {
+    void say_hi();
+
     /**
      * generate_one 操作生成的结果
      */
     struct ResultOfGenerateOne {
         std::string pubspec_file_new_content;
         std::string r_dart_file_content;
-
-
     };
 
     /**
@@ -32,6 +32,8 @@ namespace flr {
      * @return pubspec.yaml 的新内容
      */
     std::string init_one(std::string flutter_project_root_dir, std::string flutter_sdk_version, std::string dart_sdk_version, opt_log_callback_t opt_log_callback);
+
+    std::string init_one_without_cb(std::string flutter_project_root_dir, std::string flutter_sdk_version, std::string dart_sdk_version);
 
     /**
      * 为指定 flutter 工程扫描资源目录，自动为资源添加声明到 pubspec.yaml 和生成 r.g.dart
