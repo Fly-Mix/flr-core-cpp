@@ -10,25 +10,30 @@ include(cmake_dev.cmake)
 # ------ 分割线 ------
 
 set(PRODUCTS_DIR
-        "${PROJECT_SOURCE_DIR}/Products/flr-core-lib"
+        "${PROJECT_SOURCE_DIR}/Products/flr-core"
         )
 
 set(VERSION
         "0.1.0"
         )
 
-set(SOURCE_FILES
-        src/flr.cpp
-        src/constant.h
-        src/util/file_util.cpp
-        src/util/code_util.cpp
-        src/util/asset_util.cpp
-        src/util/array_util.cpp
-        )
+# src files
+set(SRC_DIR "${PROJECT_SOURCE_DIR}/src")
+file(GLOB_RECURSE SOURCE_FILES "${SRC_DIR}/*.cpp" "${SRC_DIR}/*.h")
+#set(SOURCE_FILES
+#        src/flr.cpp
+#        src/constant.h
+#        src/util/file_util.cpp
+#        src/util/code_util.cpp
+#        src/util/asset_util.cpp
+#        src/util/array_util.cpp
+#        )
+message(STATUS "flr-core src files：${SOURCE_FILES}")
 
-set(PUBLIC_HEADER_FILES
-        include/flr-core
-        )
+# public header files
+set(PUBLIC_HEADER_DIR "${PROJECT_SOURCE_DIR}/include")
+file(GLOB_RECURSE PUBLIC_HEADER_FILES "${PUBLIC_HEADER_DIR}/*.h")
+message(STATUS "flr-core public header files：${PUBLIC_HEADER_FILES}")
 
 set(PRIVATE_HEADER_FILES
         )
@@ -40,7 +45,7 @@ add_library(${PROJECT_NAME} STATIC
         ${SOURCE_FILES}
         )
 target_link_libraries(${PROJECT_NAME} ${REQUIRED_LIBRARIES})
-target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR}/include)
+target_include_directories(${PROJECT_NAME} PUBLIC ${PUBLIC_HEADER_DIR})
 
 # 设置target属性
 # - ARCHIVE_OUTPUT_DIRECTORY：指定归档的输出目录
@@ -58,8 +63,19 @@ SET_TARGET_PROPERTIES(
             OUTPUT_NAME  ${PROJECT_NAME}
 )
 
-# 头文件输出
-file(COPY  ${PUBLIC_HEADER_FILES} DESTINATION  "${PRODUCTS_DIR}/include")
+# 每次执行cmake时，导出头文件
+file(COPY ${PUBLIC_HEADER_DIR} DESTINATION ${PRODUCTS_DIR})
+# 每次执行make完成编译后，导出头文件
+add_custom_command(
+        # custom_command 依附的目标
+        TARGET ${PROJECT_NAME}
+        # custom_command 的执行时机：PRE_BUILD or POST_BUILD
+        POST_BUILD
+        # COMMAND关键字指定要执行的具体命令
+        COMMAND
+            # copy_directory：拷贝Src目录（./include）下的所有内容到Target目录（./Products/flr-core/include）
+            ${CMAKE_COMMAND} -E copy_directory ${PUBLIC_HEADER_DIR} "${PRODUCTS_DIR}/include"
+)
 
 # ------ 分割线 ------
 # 三方库
