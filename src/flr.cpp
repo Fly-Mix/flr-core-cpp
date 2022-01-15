@@ -27,6 +27,15 @@ namespace fs = std::__fs::filesystem;
 namespace flr {
     void say_hi() {
         std::cout << "hello from flr" << std::endl;
+
+        LOG(INFO) << "hello from glog";
+
+        std::string fmt_hi_str = fmt::format("hello from {}", "fmt");
+        LOG(INFO) << fmt_hi_str;
+
+        char yml_buf[] = "{hello: 1, worlds: [2, 3], map: {A: a}}";
+        ryml::Tree tree = ryml::parse(ryml::substr(yml_buf));
+        LOG(INFO) << "hello from ryml:\n" << tree;
     }
 
     /**

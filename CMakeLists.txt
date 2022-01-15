@@ -9,13 +9,14 @@ include(cmake_dev.cmake)
 
 # ------ 分割线 ------
 
-set(PRODUCTS_DIR
-        "${PROJECT_SOURCE_DIR}/Products/flr-core"
-        )
+# 工程产物存放目录
+set(PRODUCTS_DIR "${PROJECT_SOURCE_DIR}/Products/flr-core-lib")
+message(STATUS "flr-core products dir：${PRODUCTS_DIR}")
 
-set(VERSION
-        "0.1.0"
-        )
+set(VERSION "0.1.0")
+
+# 三方库存放目录
+set(3RDPARTY_DIR "${PROJECT_SOURCE_DIR}/3rdparty")
 
 # src files
 set(SRC_DIR "${PROJECT_SOURCE_DIR}/src")
@@ -77,12 +78,33 @@ add_custom_command(
             ${CMAKE_COMMAND} -E copy_directory ${PUBLIC_HEADER_DIR} "${PRODUCTS_DIR}/include"
 )
 
-# ------ 分割线 ------
-# 三方库
-set(3RDPARTY_DIR
-        "${PROJECT_SOURCE_DIR}/3rdparty"
-        )
+# 每次执行make完成编译后，在 api 工程根目录为其依赖库（flr-core和其依赖库）创建 symbolic link
+set(API_PROJ_DIR "${PROJECT_SOURCE_DIR}/api")
+set(API_PROJ_LIBS_DIR "${API_PROJ_DIR}/api-libs")
+add_custom_command(
+        # custom_command 依附的目标
+        TARGET ${PROJECT_NAME}
+        # custom_command 的执行时机：PRE_BUILD or POST_BUILD
+        POST_BUILD
+        # COMMAND关键字指定要执行的具体命令
+        # 创建 api 工程的依赖库存储目录：./api/libs
+        COMMAND
+            ${CMAKE_COMMAND} -E make_directory ${API_PROJ_LIBS_DIR}
+        # 为 api 工程根目录的依赖库（flr-core和其依赖库）创建 symbolic link
+        # 可以使用 ln 或者 CMAKE_COMMAND 的 create_symlink
+#        COMMAND
+#            ln -s ${PROJECT_SOURCE_DIR}/Products/flr-core ${API_PROJ_LIBS_DIR}/flr-core
+        COMMAND
+            ${CMAKE_COMMAND} -E create_symlink ${PROJECT_SOURCE_DIR}/Products/flr-core-lib ${API_PROJ_LIBS_DIR}/flr-core
+        COMMAND
+            ${CMAKE_COMMAND} -E create_symlink ${3RDPARTY_DIR}/fmt-lib ${API_PROJ_LIBS_DIR}/fmt
+        COMMAND
+            ${CMAKE_COMMAND} -E create_symlink ${3RDPARTY_DIR}/glog-lib ${API_PROJ_LIBS_DIR}/glog
+        COMMAND
+            ${CMAKE_COMMAND} -E create_symlink ${3RDPARTY_DIR}/rapidyaml-lib ${API_PROJ_LIBS_DIR}/ryml
+)
 
+# ------ 分割线 ------
 if (${FLR_USE_SRC})
     # FLR_USE_SRC 为 True，源码方式引入三方库
     message(STATUS "FLR_USE_SRC 值为：${FLR_USE_SRC}，flr-core 工程以源码方式引入三方库")
