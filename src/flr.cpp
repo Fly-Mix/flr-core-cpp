@@ -500,16 +500,6 @@ namespace flr {
         return pubspec_file_new_content;
     }
 
-    void default_flr_opt_log_callback(std::string log_msg) {
-        LOG(INFO) << log_msg;
-    }
-
-    std::string init_one_without_cb(std::string flutter_project_root_dir,
-                         std::string flutter_sdk_version,
-                         std::string dart_sdk_version) {
-        return init_one(flutter_project_root_dir, flutter_sdk_version, dart_sdk_version, default_flr_opt_log_callback);
-    }
-
     ResultOfGenerateOne generate_one(std::string flutter_project_root_dir,
                                   std::string flutter_sdk_version,
                                   std::string dart_sdk_version,

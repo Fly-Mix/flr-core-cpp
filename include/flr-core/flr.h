@@ -21,7 +21,7 @@ namespace flr {
     /**
      * 获取flr的处理日志信息的回调函数；用于供上层获取 init_one/generate_one 的处理日志信息，信息包括：进度信息、警告信息等
      * */
-    typedef std::function<void(std::string log_msg)> opt_log_callback_t;
+    typedef void(*opt_log_callback_t)(std::string log_msg);
 
     /**
      * 对指定 flutter 工程进行初始化
@@ -32,8 +32,6 @@ namespace flr {
      * @return pubspec.yaml 的新内容
      */
     std::string init_one(std::string flutter_project_root_dir, std::string flutter_sdk_version, std::string dart_sdk_version, opt_log_callback_t opt_log_callback);
-
-    std::string init_one_without_cb(std::string flutter_project_root_dir, std::string flutter_sdk_version, std::string dart_sdk_version);
 
     /**
      * 为指定 flutter 工程扫描资源目录，自动为资源添加声明到 pubspec.yaml 和生成 r.g.dart
