@@ -1,10 +1,21 @@
 # 构建+打包+发布三方库指引
+
 注意，所有构建都是在`3rdparty`目录下进行，若当前不在该目录，请先在终端切换到`3rdparty`目录：
 
 ```shell
 # 切换到 3rdparty 目录
 cd path/to/flr-core-cpp/3rdparty
 ```
+
+
+
+## 编译环境
+
+- macOS（>= 11.64）
+- cmake（>=3.19.6）
+- clang（from Xcode）
+
+> 查看静态库支持的architecture：lipo -info path/to/libxxx.a
 
 
 
@@ -15,7 +26,7 @@ cd path/to/flr-core-cpp/3rdparty
   # 创建 build 目录（若不存在）
   if [ ! -d fmt-lib/build ] ; then mkdir fmt-lib/build; fi;
   # 执行 camke 生成 makefile
-  cmake -S fmt -B fmt-lib/build 
+  cmake "-DCMAKE_OSX_ARCHITECTURES=x86_64;arm64" -S fmt -B fmt-lib/build 
   # 执行 make clean 清理上次构建数据
   make clean -C fmt-lib/build
   # 执行 make package 构建和打包库
@@ -23,7 +34,7 @@ cd path/to/flr-core-cpp/3rdparty
   ```
   > ``` shell
   >  # 若只需要构建生成库，直接执行 make 即可
-  >  make -C glog-lib/build
+  >  make -C fmt-lib/build
   > ```
 
 2. 发布库到工程指定目录
@@ -43,7 +54,7 @@ cd path/to/flr-core-cpp/3rdparty
   # 创建 build 目录（若不存在）
   if [ ! -d glog-lib/build ] ; then mkdir glog-lib/build; fi;
   # 执行 camke 生成 makefile（指定 BUILD_SHARED_LIBS=OFF 以生成静态库）；
-  cmake -S glog -B glog-lib/build -D BUILD_SHARED_LIBS=OFF
+  cmake "-DCMAKE_OSX_ARCHITECTURES=x86_64;arm64" -S glog -B glog-lib/build -D BUILD_SHARED_LIBS=OFF
   # 执行 make clean 清理上次构建数据
   make clean -C glog-lib/build
   # 执行 make package 构建和打包库
@@ -71,7 +82,7 @@ cd path/to/flr-core-cpp/3rdparty
   # 创建 build 目录（若不存在）
   if [ ! -d rapidyaml-lib/build ] ; then mkdir rapidyaml-lib/build; fi;
   # 执行 camke 生成 makefile
-  cmake -S rapidyaml -B rapidyaml-lib/build 
+  cmake "-DCMAKE_OSX_ARCHITECTURES=x86_64;arm64" -S rapidyaml -B rapidyaml-lib/build 
   # 执行 make clean 清理上次构建数据
   make clean -C rapidyaml-lib/build
   # 执行 make package 构建和打包库
