@@ -65,6 +65,7 @@ SET_TARGET_PROPERTIES(
 )
 
 # 每次执行cmake时，导出头文件
+file(REMOVE_RECURSE ${PRODUCTS_DIR})
 file(COPY ${PUBLIC_HEADER_DIR} DESTINATION ${PRODUCTS_DIR})
 # 每次执行make完成编译后，导出头文件
 add_custom_command(
@@ -99,8 +100,6 @@ add_custom_command(
         COMMAND
             ${CMAKE_COMMAND} -E create_symlink ${3RDPARTY_DIR}/fmt-lib ${API_PROJ_LIBS_DIR}/fmt
         COMMAND
-            ${CMAKE_COMMAND} -E create_symlink ${3RDPARTY_DIR}/glog-lib ${API_PROJ_LIBS_DIR}/glog
-        COMMAND
             ${CMAKE_COMMAND} -E create_symlink ${3RDPARTY_DIR}/rapidyaml-lib ${API_PROJ_LIBS_DIR}/ryml
 )
 
@@ -117,9 +116,6 @@ if (${FLR_USE_SRC})
     add_subdirectory(${3RDPARTY_DIR}/fmt fmt)
     target_link_libraries(${PROJECT_NAME} PUBLIC fmt)
 
-    # glog
-    add_subdirectory(${3RDPARTY_DIR}/glog glog)
-    target_link_libraries(${PROJECT_NAME} PUBLIC glog)
 else()
     # FLR_USE_SRC 为 False，二进制方式引入三方库
     message(STATUS "FLR_USE_SRC 值为：${FLR_USE_SRC}，flr-core 工程以二进制方式引入三方库")
@@ -131,9 +127,6 @@ else()
 
     # fmt
     include_directories("${3RDPARTY_DIR}/fmt-lib/include")
-
-    # glog
-    include_directories("${3RDPARTY_DIR}/glog-lib/include")
 
 endif ()
 

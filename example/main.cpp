@@ -16,6 +16,11 @@
 
 namespace fs = std::__fs::filesystem;
 
+void flr_log_callback(const char *file, int line, const char *func, int severity, const char *content)
+{
+    LOG(INFO) << "[flr]" << " [" << file << ":" << line << ":" << func << "] " << content;
+}
+
 void flr_opt_log_callback(std::string log_msg) {
     LOG(INFO) << log_msg;
 }
@@ -114,6 +119,8 @@ void test_stringstream_api() {
 }
 
 void test_flr_api() {
+    flr::set_log_callback(flr_log_callback);
+
     LOG(INFO) << "========== test flr::init_one ==========";
     flr::init_one("/Users/York/Workspace/Flutterspace/flutter_hello_app", "2.0.3", "2.12.2", flr_opt_log_callback);
 
@@ -121,15 +128,28 @@ void test_flr_api() {
     flr::generate_one("/Users/York/Workspace/Flutterspace/flutter_hello_app", "2.0.3", "2.12.2", flr_opt_log_callback);
 }
 
-int main() {
+void init_glog(int argc, char* argv[]) {
+    // Initialize Google’s logging library.
+    //初始化参数
+    FLAGS_logtostderr = true;  //TRUE:标准输出,FALSE:文件输出
+    FLAGS_alsologtostderr = true;  //除了日志文件之外是否需要标准输出
+    FLAGS_colorlogtostderr = false;  //标准输出带颜色
+    google::InitGoogleLogging("flr-core-example");
+}
+
+int main(int argc, char* argv[]) {
+    init_glog(argc, argv);
+
     test_flr_api();
     return 0;
 }
 
-/*
-#include "flr-core/flr.h"
-int main() {
-    flr::say_hi();
-    return 0;
-}
-*/
+
+//#include "flr-core/flr.h"
+//int main(int argc, char* argv[]) {
+//    init_glog(argc, argv);
+//
+//    flr::set_log_callback(flr_log_callback);
+//    flr::say_hi();
+//    return 0;
+//}

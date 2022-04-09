@@ -5,7 +5,6 @@
 // 三方库
 #include <ryml_std.hpp>
 #include <ryml.hpp>
-#include <glog/logging.h>
 #include <fmt/format.h>
 
 // 系统库
@@ -28,14 +27,18 @@ namespace flr {
     void say_hi() {
         std::cout << "hello from flr" << std::endl;
 
-        LOG(INFO) << "hello from glog";
+        LOG_DEBUG << "hello from glog";
 
         std::string fmt_hi_str = fmt::format("hello from {}", "fmt");
-        LOG(INFO) << fmt_hi_str;
+        LOG_INFO << fmt_hi_str;
 
         char yml_buf[] = "{hello: 1, worlds: [2, 3], map: {A: a}}";
         ryml::Tree tree = ryml::parse(ryml::substr(yml_buf));
-        LOG(INFO) << "hello from ryml:\n" << tree;
+        LOG_INFO << "hello from ryml:\n" << tree;
+    }
+
+    void set_log_callback(log_callback_t log_callback) {
+        flr::log_callback = log_callback;
     }
 
     /**
@@ -358,7 +361,7 @@ namespace flr {
             return "";
         }
 
-        LOG(INFO) << "old pubspec_tree:\n" << pubspec_tree << std::endl;
+        LOG_INFO << "old pubspec_tree:\n" << pubspec_tree << std::endl;
 
         // ----- Step-1 End -----
 
@@ -496,7 +499,7 @@ namespace flr {
 
         std::string pubspec_file_new_content;
         ryml::emitrs<std::string>(pubspec_tree, pubspec_tree.root_id(), &pubspec_file_new_content);
-        LOG(INFO) << "new pubspec file content:\n" << pubspec_file_new_content << std::endl;
+        LOG_INFO << "new pubspec file content:\n" << pubspec_file_new_content << std::endl;
         return pubspec_file_new_content;
     }
 
@@ -531,7 +534,7 @@ namespace flr {
             return result;
         }
 
-        LOG(INFO) << "old pubspec_tree:\n" << pubspec_tree << std::endl;
+        LOG_INFO << "old pubspec_tree:\n" << pubspec_tree << std::endl;
 
         ryml::NodeRef pubspec_config = pubspec_tree.rootref();
         if (flr::check_flr_config_is_existed(pubspec_config) == false) {
@@ -821,7 +824,7 @@ namespace flr {
 
         std::string pubspec_file_new_content = "";
         ryml::emitrs<std::string>(pubspec_tree, pubspec_tree.root_id(), &pubspec_file_new_content);
-        LOG(INFO) << "new pubspec file content:\n" << pubspec_file_new_content << std::endl;
+        LOG_INFO << "new pubspec file content:\n" << pubspec_file_new_content << std::endl;
         result.pubspec_file_new_content = pubspec_file_new_content;
 
         //  ----- Step-8 End -----

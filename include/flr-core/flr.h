@@ -6,9 +6,19 @@
 #define FLR_CORE_ENGINE_FLR_H
 
 #include <iostream>
+#include "flr_log_def.h"
 
 namespace flr {
+
+#pragma 日志API
     void say_hi();
+
+    /*
+     * 设置日志回调（供应用层打印 flr 回调的日志）
+     * */
+    void set_log_callback(log_callback_t log_callback);
+
+#pragma 业务API
 
     /**
      * generate_one 操作生成的结果

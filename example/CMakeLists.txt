@@ -8,13 +8,15 @@ SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/Products/bin)
 # 引入工程开发配置：是否采用源码方式引入库
 include(${PROJECT_SOURCE_DIR}/../cmake_dev.cmake)
 
-# ------ 分割线 ------
-
-# 引入静态库 flr-core
+# ------ 依赖库引入声明 ------
 set(FLR_CORE_ENGINE_DIR ${CMAKE_CURRENT_LIST_DIR}/..)
 set(3RDPARTY_DIR "${FLR_CORE_ENGINE_DIR}/3rdparty")
 message(STATUS "FLR_CORE_ENGINE_DIR：${FLR_CORE_ENGINE_DIR}\n3RDPARTY_DIR：${3RDPARTY_DIR}")
 
+# 引入三方库 glog
+add_subdirectory(${3RDPARTY_DIR}/glog glog)
+
+# 引入二方库 flr-core
 if (${FLR_USE_SRC})
     # FLR_USE_SRC 为 True，源码方式引入 flr-core 和其三方库
     message(STATUS "FLR_USE_SRC 值为：${FLR_USE_SRC}，example 工程以源码方式引入 flr-core 和其三方库")
@@ -37,18 +39,16 @@ else()
     include_directories("${3RDPARTY_DIR}/fmt-lib/include")
     link_directories("${3RDPARTY_DIR}/fmt-lib/lib")
 
-    # glog
-    include_directories("${3RDPARTY_DIR}/glog-lib/include")
-    link_directories("${3RDPARTY_DIR}/glog-lib/lib")
-
 endif ()
 
 
 
-# ------ 分割线 ------
+# ------ 工程编译链接 ------
 
 # example for flr-core-engine
 add_executable(${PROJECT_NAME} main.cpp)
+
+target_link_libraries(${PROJECT_NAME} PUBLIC glog)
 
 if (${FLR_USE_SRC})
     target_link_libraries(${PROJECT_NAME} PUBLIC
@@ -59,6 +59,5 @@ else()
             libflr-core.a
             libryml.a
             libfmt.a
-            libglog.a
             )
 endif()
