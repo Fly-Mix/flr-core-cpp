@@ -6,7 +6,7 @@
 #define FLR_CORE_ENGINE_FLR_LOG_H
 
 /*
- * 日志级别
+ * Log Message 打印级别
  * */
 #define FLR_LOG_DEBUG  0
 #define FLR_LOG_INFO   1
@@ -16,42 +16,38 @@
 
 namespace flr {
     /*
-     * flr 日志信息中继器（负责接收 flr 的内部日志，然后转发给应用层打印出来）
+     * flr Log Message 中继器（负责接收 flr 的内部日志信息，然后转发给应用层收集或者打印出来）
      * */
     class LogMessageRepeater;
 
     /*
-     * 日志回调函数原型
-     * @file 日志所在文件
-     * @line 日志所在代码行
-     * @func 日志所在函数
-     * @severity 日志级别
-     * @context  日志内容
+     * Log Message 回调函数原型
+     * @file Log Message 所在文件
+     * @line Log Message 所在代码行
+     * @func Log Message 所在函数
+     * @severity Log Message 级别
+     * @context  Log Message 内容
      * */
-    typedef void(*log_callback_t)(const char *file, int line, const char *func, int severity, const char *content);
+    typedef void(*log_message_callback_t)(const char *file, int line, const char *func, int severity, const char *content);
 
-    static log_callback_t log_callback = nullptr;
+    static log_message_callback_t log_message_callback = nullptr;
 };
 
 /*
- * flr 日志信息中继器（负责接收 flr 的内部日志，然后转发给应用层打印出来）
+ * flr Log Message 中继器（负责接收 flr 的内部日志信息，然后转发给应用层收集或者打印出来）
  * */
-class flr::LogMessageRepeater
-{
+class flr::LogMessageRepeater {
 public:
-    LogMessageRepeater(const char* file, int line, const char* func, int severity, log_callback_t callback)
+    LogMessageRepeater(const char* file, int line, const char* func, int severity, log_message_callback_t callback)
             : _file(file)
             , _line(line)
             , _func(func)
             , _severity(severity)
-            , _callback(callback)
-    {
+            , _callback(callback) {
     }
 
-    ~LogMessageRepeater()
-    {
-        if (_callback)
-        {
+    ~LogMessageRepeater() {
+        if (_callback) {
             std::string content = _stream.str();
             _callback(_file.c_str(), _line, _func.c_str(), _severity, content.c_str());
         }
@@ -65,18 +61,18 @@ private:
     std::string _func;
     int _severity;
 
-    log_callback_t _callback;
+    log_message_callback_t _callback;
     std::ostringstream _stream;
 };
 
 /*
- * flr 日志打印API（实际开发中使用）
+ * flr Log Message 打印API（实际开发中使用）
  * */
-#define LOG_DEBUG flr::LogMessageRepeater(__FILE__, __LINE__, __FUNCTION__, FLR_LOG_DEBUG, flr::log_callback).stream()
-#define LOG_INFO  flr::LogMessageRepeater(__FILE__, __LINE__, __FUNCTION__, FLR_LOG_INFO,  flr::log_callback).stream()
-#define LOG_WARN  flr::LogMessageRepeater(__FILE__, __LINE__, __FUNCTION__, FLR_LOG_WARN,  flr::log_callback).stream()
-#define LOG_ERROR flr::LogMessageRepeater(__FILE__, __LINE__, __FUNCTION__, FLR_LOG_ERROR, flr::log_callback).stream()
-#define LOG_FATAL flr::LogMessageRepeater(__FILE__, __LINE__, __FUNCTION__, FLR_LOG_FATAL, flr::log_callback).stream()
+#define LOG_DEBUG flr::LogMessageRepeater(__FILE__, __LINE__, __FUNCTION__, FLR_LOG_DEBUG, flr::log_message_callback).stream()
+#define LOG_INFO  flr::LogMessageRepeater(__FILE__, __LINE__, __FUNCTION__, FLR_LOG_INFO,  flr::log_message_callback).stream()
+#define LOG_WARN  flr::LogMessageRepeater(__FILE__, __LINE__, __FUNCTION__, FLR_LOG_WARN,  flr::log_message_callback).stream()
+#define LOG_ERROR flr::LogMessageRepeater(__FILE__, __LINE__, __FUNCTION__, FLR_LOG_ERROR, flr::log_message_callback).stream()
+#define LOG_FATAL flr::LogMessageRepeater(__FILE__, __LINE__, __FUNCTION__, FLR_LOG_FATAL, flr::log_message_callback).stream()
 
 
 #endif //FLR_CORE_ENGINE_FLR_LOG_H

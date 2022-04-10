@@ -14,9 +14,9 @@ namespace flr {
     void say_hi();
 
     /*
-     * 设置日志回调（供应用层打印 flr 回调的日志）
+     * 注册 Flr Log Message日志回调（供应用层打印收集或者打印 flr 回调的日志）
      * */
-    void set_log_callback(log_callback_t log_callback);
+    void register_log_message_callback(log_message_callback_t callback);
 
 #pragma 业务API
 

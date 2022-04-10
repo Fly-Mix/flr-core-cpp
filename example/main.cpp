@@ -16,7 +16,7 @@
 
 namespace fs = std::__fs::filesystem;
 
-void flr_log_callback(const char *file, int line, const char *func, int severity, const char *content)
+void flr_log_message_callback(const char *file, int line, const char *func, int severity, const char *content)
 {
     LOG(INFO) << "[flr]" << " [" << file << ":" << line << ":" << func << "] " << content;
 }
@@ -119,7 +119,7 @@ void test_stringstream_api() {
 }
 
 void test_flr_api() {
-    flr::set_log_callback(flr_log_callback);
+    flr::register_log_message_callback(flr_log_message_callback);
 
     LOG(INFO) << "========== test flr::init_one ==========";
     flr::init_one("/Users/York/Workspace/Flutterspace/flutter_hello_app", "2.0.3", "2.12.2", flr_opt_log_callback);
@@ -154,7 +154,7 @@ int main(int argc, char* argv[]) {
 //int main(int argc, char* argv[]) {
 //    init_glog(argc, argv);
 //
-//    flr::set_log_callback(flr_log_callback);
+//    flr::register_log_callback(flr_log_callback);
 //    flr::say_hi();
 //    return 0;
 //}

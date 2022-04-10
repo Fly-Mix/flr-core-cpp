@@ -37,8 +37,8 @@ namespace flr {
         LOG_INFO << "hello from ryml:\n" << tree;
     }
 
-    void set_log_callback(log_callback_t log_callback) {
-        flr::log_callback = log_callback;
+    void register_log_message_callback(log_message_callback_t callback) {
+        flr::log_message_callback = callback;
     }
 
     /**
