@@ -8,6 +8,10 @@ require './flr'
 puts "Flr-Module-Methods: #{Flr::methods}"
 puts ""
 
+puts "register message callback for Flr ..."
+Flr::register_log_message_callback(Flr::DEFAULT_LOG_MESSAGE_PRINTER)
+Flr::register_ui_message_callback(Flr::DEFAULT_UI_MESSAGE_PRINTER)
+puts ""
 
 puts "invoke Flr::say_hi ..."
 Flr::say_hi

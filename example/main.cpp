@@ -16,8 +16,7 @@
 
 namespace fs = std::__fs::filesystem;
 
-void flr_log_message_callback(const char *file, int line, const char *func, int severity, const char *content)
-{
+void flr_log_message_callback(const char *file, int line, const char *func, int severity, const char *content) {
     LOG(INFO) << "[flr]" << " [" << file << ":" << line << ":" << func << "] " << content;
 }
 

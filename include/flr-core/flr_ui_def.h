@@ -62,7 +62,7 @@ private:
  * flr UI Message 打印API（实际开发中使用）
  * */
 #define UI_INFO  flr::UiMessageRepeater(FLR_UI_INFO, flr::ui_message_callback).stream()
-#define LOG_TIPS flr::UiMessageRepeater(FLR_UI_TIPS, flr::ui_message_callback).stream()
+#define UI_TIPS flr::UiMessageRepeater(FLR_UI_TIPS, flr::ui_message_callback).stream()
 #define UI_WARN  flr::UiMessageRepeater(FLR_UI_WARN, flr::ui_message_callback).stream()
 #define UI_ERROR flr::UiMessageRepeater(FLR_UI_ERROR, flr::ui_message_callback).stream()
 

@@ -14,8 +14,9 @@
 
 namespace flr {
 
-#pragma Message API
     void say_hi();
+
+#pragma Message API
 
     /*
      * 注册 Flr Log Message 回调（供应用层打印收集或者打印 flr 回调的 Log Message）
@@ -27,7 +28,17 @@ namespace flr {
     * */
     void register_ui_message_callback(ui_message_callback_t callback);
 
-#pragma 业务API
+    /*
+    * flr 内置的默认 log_message_callback_t 实现函数，供应用层使用
+    **/
+    void default_log_message_printer(const char *file, int line, const char *func, int severity, const char *content);
+
+    /*
+    * flr 内置的默认 ui_message_callback_t 实现函数，供应用层使用
+    * */
+    void default_ui_message_printer(int severity, const char *content);
+
+#pragma 业务 API
 
     /**
      * generate_one 操作生成的结果

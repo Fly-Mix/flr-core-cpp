@@ -27,10 +27,19 @@ namespace flr {
     void say_hi() {
         std::cout << "hello from flr" << std::endl;
 
-        LOG_DEBUG << "hello from glog";
+        LOG_DEBUG << "hello from flr-log-debug-message";
+        LOG_INFO << "hello from flr-log-info-message";
+        LOG_WARN << "hello from flr-log-warn-message";
+        LOG_ERROR << "hello from flr-log-error-message";
+        LOG_FATAL << "hello from flr-log-fatal-message";
+
+        UI_INFO << "hello from flr-ui-info-message";
+        UI_TIPS << "hello from flr-ui-tips-message";
+        UI_WARN << "hello from flr-ui-warn-message";
+        UI_ERROR << "hello from flr-ui-error-message";
 
         std::string fmt_hi_str = fmt::format("hello from {}", "fmt");
-        LOG_INFO << fmt_hi_str;
+        UI_INFO << fmt_hi_str;
 
         char yml_buf[] = "{hello: 1, worlds: [2, 3], map: {A: a}}";
         ryml::Tree tree = ryml::parse(ryml::substr(yml_buf));
@@ -43,6 +52,14 @@ namespace flr {
 
     void register_ui_message_callback(ui_message_callback_t callback) {
         flr::ui_message_callback = callback;
+    }
+
+    void default_log_message_printer(const char *file, int line, const char *func, int severity, const char *content) {
+        std::cout << "[flr]" << " [" << file << ":" << line << ":" << func << "] " << content << std::endl;
+    }
+
+    void default_ui_message_printer(int severity, const char *content) {
+        std::cout << content << std::endl;
     }
 
     /**
