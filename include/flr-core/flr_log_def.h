@@ -5,6 +5,9 @@
 #ifndef FLR_CORE_ENGINE_FLR_LOG_H
 #define FLR_CORE_ENGINE_FLR_LOG_H
 
+#include <string>
+#include <sstream>
+
 /*
  * Log Message 打印级别
  * */

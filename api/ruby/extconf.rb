@@ -16,14 +16,9 @@ puts "libs_dir = #{$libs_dir}"
 # 声明引入二方库
 dir_config('flr-core', "#{$libs_dir}/flr-core")
 # 导入库的二方库的头文件
-abort "missing header flr.h" unless find_header("flr.h", "#{$libs_dir}/flr-core/include/flr-core")
+# abort "missing header flr.h" unless find_header("flr.h", "#{$libs_dir}/flr-core/include/flr-core")
 # link二方库
 abort "missing static library flr-core" unless have_library("flr-core")
-
-# 声明引入二方库 flr-core 依赖的三方库 glog
-dir_config('glog', "#{$libs_dir}/glog")
-# link三方库
-abort "missing static library glog" unless have_library("glog")
 
 # 声明引入二方库 flr-core 依赖的三方库 fmt
 dir_config('fmt', "#{$libs_dir}/fmt")

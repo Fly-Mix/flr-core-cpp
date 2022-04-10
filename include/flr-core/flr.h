@@ -6,6 +6,9 @@
 #define FLR_CORE_ENGINE_FLR_H
 
 #include <iostream>
+#include <string>
+#include <sstream>
+
 #include "flr_log_def.h"
 #include "flr_ui_def.h"
 

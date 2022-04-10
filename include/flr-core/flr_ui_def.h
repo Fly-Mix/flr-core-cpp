@@ -5,6 +5,9 @@
 #ifndef FLR_CORE_ENGINE_FLR_UI_H
 #define FLR_CORE_ENGINE_FLR_UI_H
 
+#include <string>
+#include <sstream>
+
 /*
  * UI Message 打印级别
  * */
