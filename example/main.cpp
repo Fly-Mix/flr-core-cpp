@@ -130,17 +130,22 @@ void test_flr_api() {
 
 void init_glog(int argc, char* argv[]) {
     // Initialize Google’s logging library.
-    //初始化参数
     FLAGS_logtostderr = true;  //TRUE:标准输出,FALSE:文件输出
     FLAGS_alsologtostderr = true;  //除了日志文件之外是否需要标准输出
     FLAGS_colorlogtostderr = false;  //标准输出带颜色
     google::InitGoogleLogging("flr-core-example");
 }
 
+void destroy_glog() {
+    google::ShutdownGoogleLogging();
+}
+
 int main(int argc, char* argv[]) {
     init_glog(argc, argv);
 
     test_flr_api();
+
+    destroy_glog();
     return 0;
 }
 

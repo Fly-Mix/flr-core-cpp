@@ -7,6 +7,18 @@
 cd path/to/flr-core-cpp/3rdparty
 ```
 
+> 三方库当前使用`git submodule`方式引入到主工程：
+>
+> ```shell
+> # 把yaml依赖库rapidyaml通过子模块引入主工程
+> cd path/to/flr-core-cpp
+> git submodule add https://github.com/biojppm/rapidyaml.git 3rdparty/rapidyaml
+> # 进入rapidyaml目录，切换到所需版本，并递归安装和更新其依赖的子模块
+> cd 3rdparty/rapidyaml
+> git checkout v0.1.0
+> git submodule update --init --recursive
+> ```
+
 
 
 ## 编译环境
