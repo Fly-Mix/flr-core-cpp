@@ -21,8 +21,8 @@ void flr_log_message_callback(const char *file, int line, const char *func, int 
     LOG(INFO) << "[flr]" << " [" << file << ":" << line << ":" << func << "] " << content;
 }
 
-void flr_opt_log_callback(std::string log_msg) {
-    LOG(INFO) << log_msg;
+void flr_ui_message_callback(int severity, const char *content) {
+    LOG(INFO) << content;
 }
 
 void test_glog_api() {
@@ -120,12 +120,13 @@ void test_stringstream_api() {
 
 void test_flr_api() {
     flr::register_log_message_callback(flr_log_message_callback);
+    flr::register_ui_message_callback(flr_ui_message_callback);
 
     LOG(INFO) << "========== test flr::init_one ==========";
-    flr::init_one("/Users/York/Workspace/Flutterspace/flutter_hello_app", "2.0.3", "2.12.2", flr_opt_log_callback);
+    flr::init_one("/Users/York/Workspace/Flutterspace/flutter_hello_app", "2.0.3", "2.12.2");
 
     LOG(INFO) << "========== test flr::generate_one ==========";
-    flr::generate_one("/Users/York/Workspace/Flutterspace/flutter_hello_app", "2.0.3", "2.12.2", flr_opt_log_callback);
+    flr::generate_one("/Users/York/Workspace/Flutterspace/flutter_hello_app", "2.0.3", "2.12.2");
 }
 
 void init_glog(int argc, char* argv[]) {

@@ -41,6 +41,10 @@ namespace flr {
         flr::log_message_callback = callback;
     }
 
+    void register_ui_message_callback(ui_message_callback_t callback) {
+        flr::ui_message_callback = callback;
+    }
+
     /**
      * @verbatim
      * check_flr_config_is_existed(pubspec_config)  ->  true/false
@@ -336,8 +340,7 @@ namespace flr {
 
     std::string init_one(std::string flutter_project_root_dir,
                               std::string flutter_sdk_version,
-                              std::string dart_sdk_version,
-                              opt_log_callback_t opt_log_callback) {
+                              std::string dart_sdk_version) {
 
         //  ----- Step-1 Begin -----
         // 进行环境检测；若发现不合法的环境，则提前结束：
@@ -349,7 +352,7 @@ namespace flr {
         std::string pubspec_file_content = flr::file_util::load_pubspec_file(pubspec_file_path);
         if (pubspec_file_content.empty()) {
             std::string log_msg = fmt::format("{} not found", pubspec_file_path);
-            opt_log_callback(log_msg);
+            UI_ERROR << log_msg;
             return "";
         }
 
@@ -357,7 +360,7 @@ namespace flr {
         ryml::Tree pubspec_tree = ryml::parse(pubspec_file_content_c4str);
         if (pubspec_tree.empty()) {
             std::string log_msg = fmt::format("{} is bad yaml", pubspec_file_path);
-            opt_log_callback(log_msg);
+            UI_ERROR << log_msg;
             return "";
         }
 
@@ -505,8 +508,7 @@ namespace flr {
 
     ResultOfGenerateOne generate_one(std::string flutter_project_root_dir,
                                   std::string flutter_sdk_version,
-                                  std::string dart_sdk_version,
-                                  opt_log_callback_t opt_log_callback) {
+                                  std::string dart_sdk_version) {
 
         ResultOfGenerateOne result{"", ""};
         bool should_support_nullsafety = is_should_support_nullsafety(flutter_sdk_version, dart_sdk_version);
@@ -522,7 +524,7 @@ namespace flr {
         std::string pubspec_file_content = flr::file_util::load_pubspec_file(pubspec_file_path);
         if (pubspec_file_content.empty()) {
             std::string log_msg = fmt::format("{} not found", pubspec_file_path);
-            opt_log_callback(log_msg);
+            UI_ERROR << log_msg;
             return result;
         }
 
@@ -530,7 +532,7 @@ namespace flr {
         ryml::Tree pubspec_tree = ryml::parse(pubspec_file_content_c4str);
         if (pubspec_tree.empty()) {
             std::string log_msg = fmt::format("{} is bad yaml", pubspec_file_path);
-            opt_log_callback(log_msg);
+            UI_ERROR << log_msg;
             return result;
         }
 
@@ -539,7 +541,7 @@ namespace flr {
         ryml::NodeRef pubspec_config = pubspec_tree.rootref();
         if (flr::check_flr_config_is_existed(pubspec_config) == false) {
             std::string log_msg = fmt::format("{} is bad yaml", pubspec_file_path);
-            opt_log_callback(log_msg);
+            UI_ERROR << log_msg;
             return result;
         }
 
@@ -566,7 +568,7 @@ namespace flr {
       fonts:
         - lib/assets/fonts
 )MSG", flr::constant::CORE_VERSION, flr::constant::DARTFMT_LINE_LENGTH);
-            opt_log_callback(log_msg);
+            UI_ERROR << log_msg;
             return result;
         }
 
@@ -577,7 +579,7 @@ namespace flr {
         }
         if (package_name.empty()) {
             std::string log_msg = fmt::format("[x]: {} is bad yaml：package name is required", pubspec_file_path);
-            opt_log_callback(log_msg);
+            UI_ERROR << log_msg;
             return result;
         }
         // ----- Step-1 End -----
@@ -629,7 +631,7 @@ namespace flr {
         // ----- Step-3 End -----
 
         // 扫描资源
-        opt_log_callback("scan assets now ..");
+        UI_INFO << "scan assets now ..";
 
         // ----- Step-4 Begin -----
         // 扫描assets_legal_resource_dir数组中的legal_resource_dir，输出有序的image_asset数组、non_svg_image_asset数组、svg_image_asset数组、illegal_image_file数组：
@@ -756,7 +758,7 @@ namespace flr {
 
         // ----- Step-6 End -----
 
-        opt_log_callback("scan assets done !!!");
+        UI_INFO << "scan assets done !!!";
 
         // ----- Step-7 Begin -----
         // 检测是否存在illegal_resource_file：
@@ -778,7 +780,7 @@ namespace flr {
 
         // ----- Step-7 End -----
 
-        opt_log_callback("specify scanned assets in pubspec.yaml now ...");
+        UI_INFO << "specify scanned assets in pubspec.yaml now ...";
 
         // ----- Step-8 Begin -----
         // 为扫描得到的legal_resource_file添加资源声明到pubspec.yaml：
@@ -829,7 +831,7 @@ namespace flr {
 
         //  ----- Step-8 End -----
 
-        opt_log_callback("specify scanned assets in pubspec.yaml done !!!");
+        UI_INFO << "specify scanned assets in pubspec.yaml done !!!";
 
         // ----- Step-9 Begin -----
         // 分别遍历non_svg_image_asset数组、svg_image_asset数组、text_asset数组，
@@ -859,7 +861,7 @@ namespace flr {
 
         // ----- Step-9 End -----
 
-        opt_log_callback("generate \"r.g.dart\" now ...");
+        UI_INFO << "generate \"r.g.dart\" now ...";
 
         // ----- Step-10 Begin -----
         // 创建r.g.dart文件接收流
@@ -961,12 +963,12 @@ namespace flr {
         //
         std::string warning_messages_str = warning_messages.str();
         if (warning_messages_str.length() > 0 ) {
-            opt_log_callback(warning_messages_str);
+            UI_WARN << warning_messages_str;
         }
 
         // ----- Step-21 End -----
 
-        opt_log_callback("generate \"r.g.dart\" done !!!");
+        UI_INFO << "generate \"r.g.dart\" done !!!";
 
         return result;
     }
