@@ -30,6 +30,19 @@ namespace flr {
     typedef void(*ui_message_callback_t)(int severity, const char *content);
 
     static ui_message_callback_t ui_message_callback = nullptr;
+
+    /*
+    * flr UI Message 打印器接口类（应用层继承实现该类，实现指定方法以完成 UI Message 在应用层的打印）
+    * */
+    class UiMessageAbstractPrinter {
+    public:
+        virtual ~UiMessageAbstractPrinter(){}
+        virtual void print_ui_message(int severity, const char *content) {
+            std::cout << "[flr]" << " " << content << std::endl;
+        }
+    };
+
+    static UiMessageAbstractPrinter *uiMessagePrinter = nullptr;
 };
 
 /*

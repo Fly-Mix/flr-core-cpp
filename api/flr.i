@@ -1,5 +1,5 @@
 /* File : flr.i */
-%module flr
+%module(directors="1") flr
 
 /* include STL/C++ Library */
 %include "stl.i"
@@ -10,6 +10,9 @@
 #include "api-libs/flr-core/include/flr-core/flr_ui_def.h"
 #include "api-libs/flr-core/include/flr-core/flr.h"
 %}
+
+%feature("director") flr::LogMessageAbstractPrinter;
+%feature("director") flr::UiMessageAbstractPrinter;
 
 /* Let's just grab the original header file here */
 %include "api-libs/flr-core/include/flr-core/flr_log_def.h"

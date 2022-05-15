@@ -6,6 +6,7 @@
 
 # 忽略 api 构建工程下的一些 build 产物
 api/api-libs/
+api/**/*_wrap.h
 api/**/*_wrap.cxx
 api/**/*.o
 api/**/*.log

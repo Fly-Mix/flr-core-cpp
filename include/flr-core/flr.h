@@ -19,12 +19,14 @@ namespace flr {
 #pragma Message API
 
     /*
-     * 注册 Flr Log Message 回调（供应用层打印收集或者打印 flr 回调的 Log Message）
-     * */
+    * 注册 Flr Log Message Callback（供应用层打印收集或者打印 flr 回调的 Log Message）
+    * PS: Flr 提供了 函数指针 和 对象指针 2种信息回调注册方案
+    * */
     void register_log_message_callback(log_message_callback_t callback);
 
     /*
-    * 注册 Flr UI Message 回调（供应用层在UI层展示 flr 回调的 UI Message）
+    * 注册 Flr UI Message Callback（供应用层在UI层展示 flr 回调的 UI Message）
+    * PS: Flr 提供了 函数指针 和 对象指针 2种信息回调注册方案
     * */
     void register_ui_message_callback(ui_message_callback_t callback);
 
@@ -37,6 +39,18 @@ namespace flr {
     * flr 内置的默认 ui_message_callback_t 实现函数，供应用层使用
     * */
     void default_ui_message_printer(int severity, const char *content);
+
+    /*
+    * 注册 Flr Log Message Printer（供应用层打印收集或者打印 flr 回调的 Log Message）
+    * PS: Flr 提供了 函数指针 和 对象指针 2种信息回调注册方案
+    * */
+    void register_log_message_printer(LogMessageAbstractPrinter *printer);
+
+    /*
+    * 注册 Flr UI Message Printer（供应用层打印收集或者打印 flr 回调的 UI Message）
+    * PS: Flr 提供了 函数指针 和 对象指针 2种信息回调注册方案
+    * */
+    void register_ui_message_printer(UiMessageAbstractPrinter *printer);
 
 #pragma 业务 API
 

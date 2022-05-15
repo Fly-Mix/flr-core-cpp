@@ -34,6 +34,19 @@ namespace flr {
     typedef void(*log_message_callback_t)(const char *file, int line, const char *func, int severity, const char *content);
 
     static log_message_callback_t log_message_callback = nullptr;
+
+    /*
+    * flr Log Message 打印器接口类（应用层继承实现该类，实现指定方法以完成 Log Message 在应用层的打印）
+    * */
+    class LogMessageAbstractPrinter {
+    public:
+        virtual ~LogMessageAbstractPrinter(){}
+        virtual void print_log_message(const char *file, int line, const char *func, int severity, const char *content) {
+            std::cout << "[flr]" << " [" << file << ":" << line << ":" << func << "] " << content << std::endl;
+        }
+    };
+
+    static LogMessageAbstractPrinter *logMessagePrinter = nullptr;
 };
 
 /*
@@ -76,6 +89,4 @@ private:
 #define LOG_WARN  flr::LogMessageRepeater(__FILE__, __LINE__, __FUNCTION__, FLR_LOG_WARN,  flr::log_message_callback).stream()
 #define LOG_ERROR flr::LogMessageRepeater(__FILE__, __LINE__, __FUNCTION__, FLR_LOG_ERROR, flr::log_message_callback).stream()
 #define LOG_FATAL flr::LogMessageRepeater(__FILE__, __LINE__, __FUNCTION__, FLR_LOG_FATAL, flr::log_message_callback).stream()
-
-
 #endif //FLR_CORE_ENGINE_FLR_LOG_H

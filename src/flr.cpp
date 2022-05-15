@@ -13,6 +13,7 @@
 #include <filesystem>
 #include <set>
 #include <tuple>
+#include <typeinfo>
 
 #include "flr-core/flr.h"
 #include "constant.h"
@@ -60,6 +61,35 @@ namespace flr {
 
     void default_ui_message_printer(int severity, const char *content) {
         std::cout << content << std::endl;
+    }
+
+    void callback_bridge_of_log_message_printer(const char *file, int line, const char *func, int severity, const char *content) {
+        if (flr::logMessagePrinter) {
+            flr::logMessagePrinter->print_log_message(file, line, func,severity, content);
+        }
+    }
+
+    void register_log_message_printer(LogMessageAbstractPrinter *printer) {
+//        std::cout << "LogMessageAbstractPrinter Name:" << typeid(*printer).name() << std::endl;
+        if (printer) {
+            flr::logMessagePrinter = printer;
+            flr::log_message_callback = callback_bridge_of_log_message_printer;
+        }
+        flr::logMessagePrinter->print_log_message(__FILE__, __LINE__, __FUNCTION__, FLR_LOG_DEBUG, "register_log_message_printer");
+    }
+
+    void callback_bridge_of_ui_message_printer(int severity, const char *content)  {
+        if (flr::uiMessagePrinter) {
+            flr::uiMessagePrinter->print_ui_message(severity, content);
+        }
+    }
+
+    void register_ui_message_printer(UiMessageAbstractPrinter *printer) {
+        if (printer) {
+            flr::uiMessagePrinter = printer;
+            flr::ui_message_callback = callback_bridge_of_ui_message_printer;
+        }
+        flr::uiMessagePrinter->print_ui_message(FLR_UI_INFO, "register_ui_message_printer");
     }
 
     /**
