@@ -51,8 +51,16 @@ namespace flr {
         flr::log_message_callback = callback;
     }
 
+    void unregister_log_message_callback() {
+        flr::log_message_callback = nullptr;
+    }
+
     void register_ui_message_callback(ui_message_callback_t callback) {
         flr::ui_message_callback = callback;
+    }
+
+    void unregister_ui_message_callback() {
+        flr::ui_message_callback = nullptr;
     }
 
     void default_log_message_printer(const char *file, int line, const char *func, int severity, const char *content) {
@@ -78,6 +86,13 @@ namespace flr {
         flr::logMessagePrinter->print_log_message(__FILE__, __LINE__, __FUNCTION__, FLR_LOG_DEBUG, "register_log_message_printer");
     }
 
+    void unregister_log_message_printer() {
+        if (flr::logMessagePrinter) {
+            flr::logMessagePrinter = nullptr;
+            flr::log_message_callback = nullptr;
+        }
+    }
+
     void callback_bridge_of_ui_message_printer(int severity, const char *content)  {
         if (flr::uiMessagePrinter) {
             flr::uiMessagePrinter->print_ui_message(severity, content);
@@ -90,6 +105,13 @@ namespace flr {
             flr::ui_message_callback = callback_bridge_of_ui_message_printer;
         }
         flr::uiMessagePrinter->print_ui_message(FLR_UI_INFO, "register_ui_message_printer");
+    }
+
+    void unregister_ui_message_printer() {
+        if (flr::uiMessagePrinter) {
+            flr::uiMessagePrinter = nullptr;
+            flr::ui_message_callback = nullptr;
+        }
     }
 
     /**

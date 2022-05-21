@@ -19,38 +19,66 @@ namespace flr {
 #pragma Message API
 
     /*
-    * 注册 Flr Log Message Callback（供应用层打印收集或者打印 flr 回调的 Log Message）
-    * PS: Flr 提供了 函数指针 和 对象指针 2种信息回调注册方案
-    * */
+     * 注册 Flr Log Message Callback（供应用层打印收集或者打印 flr 回调的 Log Message）
+     * PS: Flr 提供了 函数指针 和 对象指针 2种信息回调注册方案
+     * PPS：调用约定：由 Caller 自行管理传递的 函数指针/对象指针 引用的内存，Caller 在删除传递的 函数指针/对象指针 引用的内存前，应先调用对称的 unregister 操作
+     * */
     void register_log_message_callback(log_message_callback_t callback);
 
     /*
-    * 注册 Flr UI Message Callback（供应用层在UI层展示 flr 回调的 UI Message）
-    * PS: Flr 提供了 函数指针 和 对象指针 2种信息回调注册方案
-    * */
+     * 移除注册的 Flr Log Message Callback
+     * PS：register_log_message_callback 和 unregister_log_message_callback 应对称调用
+     * */
+    void unregister_log_message_callback();
+
+    /*
+     * 注册 Flr UI Message Callback（供应用层在UI层展示 flr 回调的 UI Message）
+     * PS: Flr 提供了 函数指针 和 对象指针 2种信息回调注册方案
+     * PPS：调用约定：由 Caller 自行管理传递的 函数指针/对象指针 引用的内存，Caller 在删除传递的 函数指针/对象指针 引用的内存前，应先调用对称的 unregister 操作
+     * */
     void register_ui_message_callback(ui_message_callback_t callback);
 
     /*
-    * flr 内置的默认 log_message_callback_t 实现函数，供应用层使用
-    **/
+     * 移除注册的 Flr UI Message Callback
+     * PS：register_ui_message_callback 和 unregister_ui_message_callback 应对称调用
+     * */
+    void unregister_ui_message_callback();
+
+    /*
+     * flr 内置的默认 log_message_callback_t 实现函数，供应用层使用
+     **/
     void default_log_message_printer(const char *file, int line, const char *func, int severity, const char *content);
 
     /*
-    * flr 内置的默认 ui_message_callback_t 实现函数，供应用层使用
-    * */
+     * flr 内置的默认 ui_message_callback_t 实现函数，供应用层使用
+     * */
     void default_ui_message_printer(int severity, const char *content);
 
     /*
-    * 注册 Flr Log Message Printer（供应用层打印收集或者打印 flr 回调的 Log Message）
-    * PS: Flr 提供了 函数指针 和 对象指针 2种信息回调注册方案
-    * */
+     * 注册 Flr Log Message Printer（供应用层打印收集或者打印 flr 回调的 Log Message）
+     * PS: Flr 提供了 函数指针 和 对象指针 2种信息回调注册方案
+     * PPS：调用约定：由 Caller 自行管理传递的 函数指针/对象指针 引用的内存，Caller 在删除传递的 函数指针/对象指针 引用的内存前，应先调用对称的 unregister 操作
+     * */
     void register_log_message_printer(LogMessageAbstractPrinter *printer);
 
     /*
-    * 注册 Flr UI Message Printer（供应用层打印收集或者打印 flr 回调的 UI Message）
-    * PS: Flr 提供了 函数指针 和 对象指针 2种信息回调注册方案
-    * */
+     * 移除注册的 Flr Log Message Printer
+     * PS：register_log_message_printer 和 unregister_log_message_printer 应对称调用
+     */
+    void unregister_log_message_printer();
+
+    /*
+     * 注册 Flr UI Message Printer（供应用层打印收集或者打印 flr 回调的 UI Message）
+     * PS: Flr 提供了 函数指针 和 对象指针 2种信息回调注册方案
+     * PPS：调用约定：由 Caller 自行管理传递的 函数指针/对象指针 引用的内存，Caller 在删除传递的 函数指针/对象指针 引用的内存前，应先调用对称的 unregister 操作
+     * */
     void register_ui_message_printer(UiMessageAbstractPrinter *printer);
+
+    /*
+     * 移除注册的 Flr UI Message Printer
+     * PS：register_ui_message_printer 和 unregister_ui_message_printer 应对称调用
+     * */
+    void unregister_ui_message_printer();
 
 #pragma 业务 API
 

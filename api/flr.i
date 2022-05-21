@@ -11,6 +11,10 @@
 #include "api-libs/flr-core/include/flr-core/flr.h"
 %}
 
+/*
+ * Apply the 'director' feature to a Class,
+ * then we can override it in target language.
+ * */
 %feature("director") flr::LogMessageAbstractPrinter;
 %feature("director") flr::UiMessageAbstractPrinter;
 
