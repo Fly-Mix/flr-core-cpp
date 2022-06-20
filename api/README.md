@@ -23,7 +23,7 @@ $ cd path/to/flr-core-cpp/api
 $ rm -rf flr_wrap.h flr_wrap.cxx
 $ swig -c++ -ruby flr.i
 
-# 为目标高级语言生成动态库，并进行测试
+# 为目标高级语言 Ruby 生成动态库，并进行测试
 $ cd path/to/flr-core-cpp/api/ruby
 $ ruby extconf.rb
 $ make clean && make

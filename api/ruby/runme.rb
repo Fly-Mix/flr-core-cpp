@@ -97,9 +97,13 @@ puts "invoke Flr::say_hi ..."
 Flr::say_hi
 puts ""
 
-# puts "invoke Flr::init_one ..."
-# Flr::init_one("/Users/York/Workspace/Flutterspace/flutter_hello_app", "2.0.3", "2.12.2")
-# puts ""
+puts "invoke Flr::init_one ..."
+Flr::init_one("/Users/York/Workspace/Flutterspace/flutter_hello_app", "2.0.3", "2.12.2")
+puts ""
+
+puts "invoke Flr::generate_one ..."
+Flr::generate_one("/Users/York/Workspace/Flutterspace/flutter_hello_app", "2.0.3", "2.12.2")
+puts ""
 
 unregister_message_printer
 puts "Flr is tested done, goodbye~"
