@@ -1,7 +1,8 @@
 //
 // Created by York on 2021/7/24.
 //
-
+#include <ryml_std.hpp>
+#include <ryml.hpp>
 #include <fmt/format.h>
 
 #include <string>
@@ -24,6 +25,7 @@ namespace flr {
 // - https://github.com/Fly-Mix/flr-vscode-extension
 // - https://github.com/Fly-Mix/flr-as-plugin
 //
+
 // ignore: unused_import
 import 'package:flutter/widgets.dart';
 // ignore: unused_import
@@ -34,20 +36,26 @@ import 'package:path/path.dart' as path;
 import 'package:flutter_svg/flutter_svg.dart';
 // ignore: unused_import
 import 'package:r_dart_library/asset_svg.dart';
+
 /// This `R` class is generated and contains references to static asset resources.
-class R {
-  /// package name: #{package_name}
-  static const package = "#{package_name}";
+class R {{
+  /// package name: {0}
+  static const package = "{1}";
+
   /// This `R.image` struct is generated, and contains static references to static non-svg type image asset resources.
   static const image = _R_Image();
+
   /// This `R.svg` struct is generated, and contains static references to static svg type image asset resources.
   static const svg = _R_Svg();
+
   /// This `R.text` struct is generated, and contains static references to static text asset resources.
   static const text = _R_Text();
+
   /// This `R.fontFamily` struct is generated, and contains static references to static font asset resources.
   static const fontFamily = _R_FontFamily();
-}
+}}
 )CODE";
+            code = fmt::format(code, package_name, package_name);
             // 移除 "\n" 首字符
             code.erase(0, 1);
             return code;
@@ -71,29 +79,36 @@ class R {
                 code += R"CODE(class AssetResource {
   /// Creates an object to hold the asset resource’s metadata.
   const AssetResource(this.assetName, {this.packageName});
+
   /// The name of the main asset from the set of asset resources to choose from.
   final String assetName;
+
   /// The name of the package from which the asset resource is included.
   final String? packageName;
+
   /// The name used to generate the key to obtain the asset resource. For local assets
   /// this is [assetName], and for assets from packages the [assetName] is
   /// prefixed 'packages/<package_name>/'.
   String get keyName => packageName == null ? assetName : "packages/$packageName/$assetName";
+
   /// The file basename of the asset resource.
   String get fileBasename {
     final basename = path.basename(assetName);
     return basename;
   }
+
   /// The no extension file basename of the asset resource.
   String get fileBasenameNoExtension {
     final basenameWithoutExtension = path.basenameWithoutExtension(assetName);
     return basenameWithoutExtension;
   }
+
   /// The file extension name of the asset resource.
   String get fileExtname {
     final extension = path.extension(assetName);
     return extension;
   }
+
   /// The directory path name of the asset resource.
   String get fileDirname {
     var dirname = assetName;
@@ -376,8 +391,6 @@ all_g_AssetResource_property_code);
             std::string all_g_Asset_method_code = "";
 
             for (std::string asset: non_svg_image_asset_array) {
-                all_g_Asset_method_code += "\n";
-
                 std::string asset_id = non_svg_image_asset_id_dict[asset];
                 std::string asset_comment = generate_asset_comment(asset, package_name);
 
@@ -401,6 +414,7 @@ asset_id);
 // ignore: camel_case_types
 class _R_Image {{
   const _R_Image();
+
   final asset = const _R_Image_AssetResource();
 {0}
 }}
@@ -416,8 +430,6 @@ all_g_Asset_method_code);
             std::string all_g_Asset_method_code = "";
 
             for (std::string asset: svg_image_asset_array) {
-                all_g_Asset_method_code += "\n";
-
                 std::string asset_id = svg_image_asset_id_dict[asset];
                 std::string asset_comment = generate_asset_comment(asset, package_name);
 
@@ -458,6 +470,7 @@ asset_id);
 // ignore: camel_case_types
 class _R_Svg {{
   const _R_Svg();
+
   final asset = const _R_Svg_AssetResource();
 {0}
 }}
@@ -473,8 +486,6 @@ all_g_Asset_method_code);
             std::string all_g_Asset_method_code = "";
 
             for (std::string asset: text_asset_array) {
-                all_g_Asset_method_code += "\n";
-
                 std::string asset_id = text_asset_id_dict[asset];
                 std::string asset_comment = generate_asset_comment(asset, package_name);
 
@@ -499,6 +510,7 @@ asset_id);
 // ignore: camel_case_types
 class _R_Text {{
   const _R_Text();
+
   final asset = const _R_Text_AssetResource();
 {0}
 }}
@@ -538,11 +550,9 @@ all_g_Asset_method_code);
             std::string all_g_Asset_method_code = "";
 
             for (FontFamilyConfig font_family_config: font_family_config_array) {
-                all_g_Asset_method_code += "\n";
-
                 std::string font_family_name = std::get<0>(font_family_config);
                 std::string font_family_id = generate_font_family_id(font_family_name);
-                std::string  font_family_comment = "font family: " + font_family_name;
+                std::string font_family_comment = "font family: " + font_family_name;
 
                 std::string g_Asset_method_code = fmt::format(R"CODE(
   /// {0}

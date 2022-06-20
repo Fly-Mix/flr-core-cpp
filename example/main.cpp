@@ -17,7 +17,7 @@
 namespace fs = std::__fs::filesystem;
 
 void flr_log_message_callback(const char *file, int line, const char *func, int severity, const char *content) {
-    LOG(INFO) << "[flr]" << " [" << file << ":" << line << ":" << func << "] " << content;
+    LOG(INFO) << "[flr-example]" << " [" << file << ":" << line << ":" << func << "] " << content;
 }
 
 void flr_ui_message_callback(int severity, const char *content) {
@@ -122,10 +122,14 @@ void test_flr_api() {
     flr::register_ui_message_callback(flr_ui_message_callback);
 
     LOG(INFO) << "========== test flr::init_one ==========";
-    flr::init_one("/Users/York/Workspace/Flutterspace/flutter_hello_app", "2.0.3", "2.12.2");
+    std::string pubspec_file_new_content = flr::init_one("/Users/York/Workspace/Flutterspace/flutter_hello_app", "2.0.3", "2.12.2");
+    LOG(INFO) << "========== [flr::init_one] pubspec_file_new_content  ==========\n" << pubspec_file_new_content;
 
     LOG(INFO) << "========== test flr::generate_one ==========";
-    flr::generate_one("/Users/York/Workspace/Flutterspace/flutter_hello_app", "2.0.3", "2.12.2");
+    flr::ResultOfGenerateOne resultOfGenerateOne = flr::generate_one("/Users/York/Workspace/Flutterspace/flutter_hello_app", "2.0.3", "2.12.2");
+    LOG(INFO) << "========== [flr::generate_one] pubspec_file_new_content  ==========\n" << resultOfGenerateOne.pubspec_file_new_content;
+    LOG(INFO) << "========== [flr::generate_one] r_dart_file_content  ==========\n" << resultOfGenerateOne.r_dart_file_content;
+
 }
 
 void init_glog(int argc, char* argv[]) {

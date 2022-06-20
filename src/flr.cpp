@@ -794,7 +794,7 @@ namespace flr {
         std::vector<flr::code_util::FontFamilyConfig> font_family_config_array;
         std::vector<std::string> illegal_font_file_array;
 
-        for (const std::string &resource_dir : assets_legal_resource_dir_array) {
+        for (const std::string &resource_dir : fonts_legal_resource_dir_array) {
             std::vector<std::string> font_family_dir_array = flr::file_util::find_top_child_dirs(resource_dir);
 
             for (const std::string &font_family_dir : font_family_dir_array) {
@@ -822,7 +822,7 @@ namespace flr {
         {
             std::string a_family = std::get<0>(a_config);
             std::string b_family = std::get<0>(b_config);
-            return a_family.compare(b_family);
+            return a_family < b_family;
         } );
 
         // ----- Step-6 End -----
@@ -887,11 +887,30 @@ namespace flr {
         }
 
         std::vector<std::string> asset_array = flr::asset_util::merge_flutter_assets(flutter_project_root_dir, package_name, new_asset_array, old_asset_array);
-        if (asset_array.empty()) {
+        if (flutter_config.has_child("assets")) {
             flutter_config.remove_child("assets");
-        } else {
+        }
+        if (asset_array.empty() == false) {
             flutter_config["assets"] << asset_array;
         }
+
+        if (flutter_config.has_child("fonts")) {
+            flutter_config.remove_child("fonts");
+        }
+        if (font_family_config_array.empty() == false) {
+            ryml::NodeRef flutter_fonts_config = flutter_config["fonts"];
+            flutter_fonts_config |= ryml::SEQ;
+            for (flr::code_util::FontFamilyConfig font_family_config: font_family_config_array) {
+                std::string font_family_name = std::get<0>(font_family_config);
+                std::vector<std::string> font_assets = std::get<1>(font_family_config);
+
+                ryml::NodeRef font_family_config_node = flutter_fonts_config.append_child();
+                font_family_config_node |= ryml::MAP;
+                font_family_config_node["family"] << font_family_name;
+                font_family_config_node["fonts"] << font_assets;
+            }
+        }
+
 
         std::string pubspec_file_new_content = "";
         ryml::emitrs<std::string>(pubspec_tree, pubspec_tree.root_id(), &pubspec_file_new_content);
